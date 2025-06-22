@@ -16,16 +16,17 @@ export default async function Home(props: Props) {
   const search = searchParams?.search || "";
   const page = searchParams?.page || 1;
   const size = searchParams?.size || 5;
-  const cameras = await getCameras(search, page, size);
+  const data = await getCameras(search, page, size);
   const {
     items: cameraItems,
     page: currentPage,
     pages,
     size: itemsPerPage,
     total,
-  } = cameras;
+  } = data;
+
   return (
-    <main className="container min-h--screen font-[family-name:var(--font-geist-sans)]">
+    <main className="container w-full min-h--screen font-[family-name:var(--font-geist-sans)]">
       <div className="">
         <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <h1 className="text-2xl font-bold text-gray-800">

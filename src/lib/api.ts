@@ -24,7 +24,6 @@ export async function getCameras(
     });
     const data: CamerasApiResponse = await response.json();
     console.log(data);
-
     return data;
   } catch (error) {
     return notFound();

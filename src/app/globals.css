@@ -5,8 +5,21 @@
   --foreground: #171717;
 }
 .container {
+  /* width: 100%; */
   max-width: 1440px;
   margin: auto;
   padding-inline: 18px;
   padding-top: 18px;
+}
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) skewX(-12deg);
+  }
+  100% {
+    transform: translateX(200%) skewX(-12deg);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.5s infinite;
 }

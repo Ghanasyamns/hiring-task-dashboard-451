@@ -8,9 +8,6 @@ const CameraCard = ({ camera }: { camera: Camera }) => {
           src={camera.snapshot}
           alt={camera.name}
           className="w-full h-full object-cover"
-          // onError={(e) => {
-          //   (e.target as HTMLImageElement).src = "/placeholder-camera.jpg";
-          // }}
         />
         <div
           className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium ${

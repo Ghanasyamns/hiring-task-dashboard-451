@@ -1,5 +1,6 @@
 "use client";
 
+import { LeftArrow, RightArrow } from "@/components/icons/icons";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { Suspense } from "react";
 
@@ -26,6 +27,69 @@ function Pagination({ total, size, pages, page }: Props) {
     }
     replace(`${pathname}?${params.toString()}`);
   };
+
+  const renderPageNumbers = () => {
+    const items = [];
+    const ellipsis = (
+      <span key={`ellipsis-${items.length}`} className="px-4 py-2">
+        ...
+      </span>
+    );
+
+    // Always show first page
+    items.push(
+      <button
+        key={1}
+        onClick={() => updatePage(1)}
+        className={`px-4 py-2 border rounded-md ${
+          page === 1 ? "bg-blue-500 text-white" : "hover:bg-gray-50"
+        }`}
+      >
+        1
+      </button>
+    );
+
+    // Show left ellipsis if current page is far from start
+    if (page > 3) {
+      items.push(ellipsis);
+    }
+
+    // Show current page and one adjacent if needed
+    if (page > 2 && page < pages - 1) {
+      items.push(
+        <button
+          key={page}
+          onClick={() => updatePage(page)}
+          className="px-4 py-2 border rounded-md bg-blue-500 text-white"
+        >
+          {page}
+        </button>
+      );
+    }
+
+    // Show right ellipsis if current page is far from end
+    if (page < pages - 2) {
+      items.push(ellipsis);
+    }
+
+    // Always show last page if different from first
+    if (pages > 1) {
+      items.push(
+        <button
+          key={pages}
+          onClick={() => updatePage(pages)}
+          className={`px-4 py-2 border rounded-md ${
+            page === pages ? "bg-blue-500 text-white" : "hover:bg-gray-50"
+          }`}
+        >
+          {pages}
+        </button>
+      );
+    }
+
+    return items;
+  };
+
   return (
     <Suspense fallback={<div></div>}>
       <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -38,44 +102,19 @@ function Pagination({ total, size, pages, page }: Props) {
           <button
             onClick={() => updatePage(page - 1)}
             disabled={page === 1}
-            className="px-4 py-2 border rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+            className="px-2 md:px-4 py-2 border rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
           >
-            Previous
+            {/* Previous */}
+            <LeftArrow />
           </button>
-
-          {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-            let pageNum;
-            if (totalPages <= 5) {
-              pageNum = i + 1;
-            } else if (page <= 3) {
-              pageNum = i + 1;
-            } else if (page >= totalPages - 2) {
-              pageNum = totalPages - 4 + i;
-            } else {
-              pageNum = page - 2 + i;
-            }
-
-            return (
-              <button
-                key={pageNum}
-                onClick={() => updatePage(pageNum)}
-                className={`px-4 py-2 border rounded-md ${
-                  page === pageNum
-                    ? "bg-blue-500 text-white"
-                    : "hover:bg-gray-50"
-                }`}
-              >
-                {pageNum}
-              </button>
-            );
-          })}
+          {renderPageNumbers()}
 
           <button
             onClick={() => updatePage(page + 1)}
             disabled={page === totalPages}
-            className="px-4 py-2 border rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+            className="px-2 md:px-4 py-2 border rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
           >
-            Next
+            <RightArrow />
           </button>
         </div>
       </div>
