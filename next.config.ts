@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  publicRuntimeConfig: {
+    baseUrl: "https://task-451-api.ryd.wafaicloud.com",
+  },
 };
 
 export default nextConfig;
