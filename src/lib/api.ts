@@ -1,6 +1,7 @@
-import { CamerasApiResponse } from "@/types/camera";
+import { CameraDetails, CamerasApiResponse } from "@/types/camera";
 import getConfig from "next/config";
 import { notFound } from "next/navigation";
+import { endpoints } from "./endpoints";
 
 const { publicRuntimeConfig } = getConfig();
 const baseUrl = publicRuntimeConfig.baseUrl;
@@ -13,7 +14,7 @@ export async function getCameras(
   size = 5
 ): Promise<CamerasApiResponse> {
   try {
-    const url = new URL(appendBaseUrl("/cameras"));
+    const url = new URL(appendBaseUrl(endpoints.get_cameras));
     url.searchParams.append("page", page.toString());
     url.searchParams.append("size", size.toString());
     url.searchParams.append("camera_name", search ?? "");
@@ -29,3 +30,16 @@ export async function getCameras(
     return notFound();
   }
 }
+export const getCameraDetails = async (): Promise<CameraDetails> => {
+  try {
+    const url = new URL(appendBaseUrl(endpoints.get_camera));
+    const response = await fetch(url.toString(), {
+      next: { revalidate: 3600 },
+    });
+    const data: CameraDetails = await response.json();
+    console.log(data);
+    return data;
+  } catch (error) {
+    return notFound();
+  }
+};

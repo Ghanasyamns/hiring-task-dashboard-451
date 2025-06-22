@@ -28,7 +28,7 @@ export default function FilterProps() {
   // add debouncer for search input
   const searchDebounce = useDebouncedCallback(
     (term, param) => handleChange(term, param),
-    800
+    500
   );
   const searchValue = searchParams.get("search")?.toString() ?? "";
   const sizeValue = searchParams.get("size")?.toString() ?? "5";

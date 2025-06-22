@@ -1,8 +1,12 @@
 import { Camera } from "@/types/camera";
+import Link from "next/link";
 
 const CameraCard = ({ camera }: { camera: Camera }) => {
   return (
-    <div className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+    <Link
+      href={`/${camera.id}`}
+      className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+    >
       <div className="relative aspect-video bg-gray-100">
         <img
           src={camera.snapshot}
@@ -87,7 +91,7 @@ const CameraCard = ({ camera }: { camera: Camera }) => {
           </div>
         )}
       </div>
-    </div>
+    </Link>
   );
 };
 

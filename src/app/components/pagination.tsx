@@ -2,7 +2,7 @@
 
 import { LeftArrow, RightArrow } from "@/components/icons/icons";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, useMemo } from "react";
 
 type Props = {
   total: number;
@@ -14,8 +14,8 @@ function Pagination({ total, size, pages, page }: Props) {
   const { replace } = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const DOTS = "...";
 
-  const totalItems = total;
   const totalPages = pages;
   const startIndex = (page - 1) * size;
   const updatePage = (term: number) => {
@@ -27,75 +27,53 @@ function Pagination({ total, size, pages, page }: Props) {
     }
     replace(`${pathname}?${params.toString()}`);
   };
-
-  const renderPageNumbers = () => {
-    const items = [];
-    const ellipsis = (
-      <span key={`ellipsis-${items.length}`} className="px-4 py-2">
-        ...
-      </span>
-    );
-
-    // Always show first page
-    items.push(
-      <button
-        key={1}
-        onClick={() => updatePage(1)}
-        className={`px-4 py-2 border rounded-md ${
-          page === 1 ? "bg-blue-500 text-white" : "hover:bg-gray-50"
-        }`}
-      >
-        1
-      </button>
-    );
-
-    // Show left ellipsis if current page is far from start
-    if (page > 3) {
-      items.push(ellipsis);
-    }
-
-    // Show current page and one adjacent if needed
-    if (page > 2 && page < pages - 1) {
-      items.push(
-        <button
-          key={page}
-          onClick={() => updatePage(page)}
-          className="px-4 py-2 border rounded-md bg-blue-500 text-white"
-        >
-          {page}
-        </button>
-      );
-    }
-
-    // Show right ellipsis if current page is far from end
-    if (page < pages - 2) {
-      items.push(ellipsis);
-    }
-
-    // Always show last page if different from first
-    if (pages > 1) {
-      items.push(
-        <button
-          key={pages}
-          onClick={() => updatePage(pages)}
-          className={`px-4 py-2 border rounded-md ${
-            page === pages ? "bg-blue-500 text-white" : "hover:bg-gray-50"
-          }`}
-        >
-          {pages}
-        </button>
-      );
-    }
-
-    return items;
+  const range = (start: number, end: number) => {
+    let length = end - start + 1;
+    return Array.from({ length }, (_, idx) => idx + start);
   };
+
+  const siblingCount = 0; // how many page numbers to show on each side of the current page
+
+  const paginationRange = useMemo(() => {
+    const totalPageNumbers = siblingCount + 5;
+
+    if (totalPageNumbers >= totalPages) {
+      return range(1, totalPages);
+    }
+
+    const leftSiblingIndex = Math.max(page - siblingCount, 1);
+    const rightSiblingIndex = Math.min(page + siblingCount, totalPages);
+
+    const shouldShowLeftDots = leftSiblingIndex > 2;
+    const shouldShowRightDots = rightSiblingIndex < totalPages - 2;
+
+    const firstPageIndex = 1;
+    const lastPageIndex = totalPages;
+    if (!shouldShowLeftDots && shouldShowRightDots) {
+      let leftItemCount = 3 + 2 * siblingCount;
+      let leftRange = range(1, leftItemCount);
+
+      return [...leftRange, DOTS, totalPages];
+    }
+
+    if (shouldShowLeftDots && !shouldShowRightDots) {
+      let rightItemCount = 3 + 2 * siblingCount;
+      let rightRange = range(totalPages - rightItemCount + 1, totalPages);
+      return [firstPageIndex, DOTS, ...rightRange];
+    }
+
+    if (shouldShowLeftDots && shouldShowRightDots) {
+      let middleRange = range(leftSiblingIndex, rightSiblingIndex);
+      return [firstPageIndex, DOTS, ...middleRange, DOTS, lastPageIndex];
+    }
+  }, [totalPages, size, siblingCount, page]);
 
   return (
     <Suspense fallback={<div></div>}>
       <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="text-sm text-gray-600">
-          Showing {startIndex + 1} to {Math.min(startIndex + size, totalItems)}{" "}
-          of {totalItems} cameras
+          Showing {startIndex + 1} to {Math.min(startIndex + size, total)} of{" "}
+          {total} cameras
         </div>
 
         <div className="flex gap-2">
@@ -107,7 +85,30 @@ function Pagination({ total, size, pages, page }: Props) {
             {/* Previous */}
             <LeftArrow />
           </button>
-          {renderPageNumbers()}
+          {/* {renderPageNumbers()} */}
+          {paginationRange?.map((pageNumber, index) => {
+            if (pageNumber === DOTS) {
+              return (
+                <span key={index} className="px-4 py-2">
+                  &#8230;
+                </span>
+              );
+            } else {
+              return (
+                <button
+                  key={index}
+                  onClick={() => updatePage(Number(pageNumber))}
+                  className={`px-4 py-2 border rounded-md ${
+                    page === pageNumber
+                      ? "bg-blue-500 text-white"
+                      : "hover:bg-gray-50"
+                  }`}
+                >
+                  {pageNumber}
+                </button>
+              );
+            }
+          })}
 
           <button
             onClick={() => updatePage(page + 1)}
