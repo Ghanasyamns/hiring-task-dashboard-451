@@ -12,6 +12,7 @@ type FormItemProps = {
   max?: number;
   placeholder?: string;
   className?: string;
+  step?: number;
 };
 
 export function FormItem({
@@ -26,6 +27,7 @@ export function FormItem({
   max,
   placeholder,
   className = "",
+  step,
 }: FormItemProps) {
   return (
     <div className={`mb-4 ${className}`}>
@@ -41,6 +43,7 @@ export function FormItem({
         required={required}
         min={min}
         max={max}
+        step={step}
         placeholder={placeholder}
         className={`w-full px-3 py-2 border ${
           error ? "border-red-500" : "border-gray-300"

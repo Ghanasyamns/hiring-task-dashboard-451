@@ -6,6 +6,7 @@ import { FieldValidationError, Tag, UpdateCameraData } from "@/types/camera";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { TagInput } from "./tag-input";
+import { EditIcon } from "@/components/icons/icons";
 
 export function UpdateCameraModal({
   data,
@@ -84,11 +85,11 @@ export function UpdateCameraModal({
     <div>
       <button
         onClick={() => setIsOpen(true)}
-        className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md text-base"
+        className="p-2 md:p-4 rounded hover:bg-gray-100 text-gray-600 hover:text-blue-600 transition-colors"
+        aria-label="Edit"
       >
-        Update camera
+        <EditIcon />
       </button>
-
       <Modal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}

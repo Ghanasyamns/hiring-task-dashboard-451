@@ -1,5 +1,6 @@
 import { formatDate } from "@/lib/utils";
 import type { DemographicsConfig } from "@/types/camera";
+import { UpdateTrackingConfigModal } from "./update-demographic";
 
 function DemographicsConfig({ data }: { data: DemographicsConfig }) {
   const {
@@ -53,10 +54,24 @@ function DemographicsConfig({ data }: { data: DemographicsConfig }) {
   ];
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
-      <div className="p-4 border-b border-gray-200">
+      <div className="p-4 border-b border-gray-200 flex justify-between items-center">
         <h2 className="text-lg font-semibold text-gray-800">
           Demographics Configuration
         </h2>
+        <UpdateTrackingConfigModal
+          data={{
+            track_history_max_length,
+            exit_threshold,
+            min_track_duration,
+            detection_confidence_threshold,
+            demographics_confidence_threshold,
+            min_track_updates,
+            box_area_threshold,
+            save_interval,
+            frame_skip_interval,
+          }}
+          id={data.id}
+        />
       </div>
       <div className="p-4 space-y-4">
         <div className="grid grid-cols-2 gap-4">
@@ -67,10 +82,10 @@ function DemographicsConfig({ data }: { data: DemographicsConfig }) {
             </div>
           ))}
         </div>
-        <div className="pt-2 text-xs text-gray-500">
+        {/* <div className="pt-2 text-xs text-gray-500">
           <p>Config ID: {data.id}</p>
           <p>Last updated: {formatDate(data.updated_at)}</p>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -72,3 +72,15 @@ export type UpdateCameraData = {
 export type FieldValidationError = {
   [key: string]: string;
 };
+
+export interface UpdateDemographicsData {
+  track_history_max_length: number;
+  exit_threshold: number;
+  min_track_duration: number;
+  detection_confidence_threshold: number;
+  demographics_confidence_threshold: number;
+  min_track_updates: number;
+  box_area_threshold: number;
+  save_interval: number;
+  frame_skip_interval: number;
+}

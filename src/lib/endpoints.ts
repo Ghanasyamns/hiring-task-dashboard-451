@@ -3,4 +3,5 @@ export const endpoints = {
   get_camera: "/cameras/{camera_id}",
   update_camera: "/cameras/{camera_id}",
   get_tags: "/tags",
+  update_demographics: "/demographics/config/{config_id}",
 };

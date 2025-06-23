@@ -38,10 +38,10 @@ function CameraHeader({ data }: Props) {
           id={data.id}
         />
       </Suspense>
-      <div className="text-sm text-gray-500">
+      {/* <div className="text-sm text-gray-500">
         <p>Created: {formatDate(data.created_at)}</p>
         <p>Last updated: {formatDate(data.updated_at)}</p>
-      </div>
+      </div> */}
     </div>
   );
 }

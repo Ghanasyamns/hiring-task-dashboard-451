@@ -4,6 +4,7 @@ import {
   FieldValidationError,
   Tag,
   UpdateCameraData,
+  UpdateDemographicsData,
 } from "@/types/camera";
 
 import { notFound } from "next/navigation";
@@ -59,7 +60,14 @@ export const getCameraDetails = async (
     return notFound();
   }
 };
-
+const constructErrorData = (errorData: any) => {
+  const errors: FieldValidationError = {};
+  errorData.detail.forEach((error: { loc: any[]; msg: string }) => {
+    const field = error.loc[error.loc.length - 1];
+    errors[field] = error.msg;
+  });
+  return errors;
+};
 export const updateCameraAPI = async (
   cameraId: string,
   formData: UpdateCameraData
@@ -77,11 +85,8 @@ export const updateCameraAPI = async (
     if (!response.ok) {
       if (response.status === 422) {
         const errorData = await response.json();
-        const errors: FieldValidationError = {};
-        errorData.detail.forEach((error: { loc: any[]; msg: string }) => {
-          const field = error.loc[error.loc.length - 1];
-          errors[field] = error.msg;
-        });
+        const errors: FieldValidationError = constructErrorData(errorData);
+
         return { success: false, errors };
       }
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -111,5 +116,44 @@ export const getAllTags = async (): Promise<Tag[]> => {
     return data;
   } catch (error) {
     return [];
+  }
+};
+
+export const updateTrackingConfigAPI = async (
+  configId: string,
+  formData: UpdateDemographicsData
+): Promise<ApiResponse<CameraDetails>> => {
+  try {
+    const endpoint = endpoints.update_demographics.replace(
+      "{config_id}",
+      configId
+    );
+    const url = new URL(appendBaseUrl(endpoint));
+    const response = await fetch(url.toString(), {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    if (!response.ok) {
+      if (response.status === 422) {
+        const errorData = await response.json();
+        const errors: FieldValidationError = constructErrorData(errorData);
+        return { success: false, errors };
+      }
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data: CameraDetails = await response.json();
+    console.log(data);
+    return { success: true, data };
+  } catch (error) {
+    console.error("Error updating camera:", error);
+    return {
+      success: false,
+      errors: {
+        field: "Network error occurred",
+      },
+    };
   }
 };
