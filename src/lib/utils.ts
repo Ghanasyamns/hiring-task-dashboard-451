@@ -3,3 +3,7 @@ export const UpdateUrlQuery = (url: string, key: string, value: string) => {
   searchParams.set(key, value);
   return `${url.split("?")[0]}?${searchParams.toString()}`;
 };
+export const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleString();
+};

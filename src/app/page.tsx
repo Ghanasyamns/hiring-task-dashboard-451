@@ -1,6 +1,6 @@
 import { getCameras } from "@/lib/api";
-import FilterProps from "./components/filterProps";
-import CameraCard from "./components/cameraCard";
+import FilterProps from "./components/filter-props";
+import CameraCard from "./components/camera-card";
 import Pagination from "./components/pagination";
 import { Suspense } from "react";
 import Loader from "@/components/loader";

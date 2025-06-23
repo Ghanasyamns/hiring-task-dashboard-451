@@ -36,8 +36,8 @@ export interface DemographicsConfig {
   frame_skip_interval: number;
   id: string;
   camera_id: string;
-  created_at: string | Date;
-  updated_at: string | Date;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface CameraDetails {
@@ -48,8 +48,8 @@ export interface CameraDetails {
   is_active: boolean;
   status_message: string;
   snapshot: string;
-  created_at: string | Date;
-  updated_at: string | Date;
+  created_at: string;
+  updated_at: string;
   stream_frame_width: number;
   stream_frame_height: number;
   stream_max_length: number;

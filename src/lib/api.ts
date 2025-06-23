@@ -30,9 +30,12 @@ export async function getCameras(
     return notFound();
   }
 }
-export const getCameraDetails = async (): Promise<CameraDetails> => {
+export const getCameraDetails = async (
+  cameraId: string
+): Promise<CameraDetails> => {
   try {
-    const url = new URL(appendBaseUrl(endpoints.get_camera));
+    const endpoint = endpoints.get_camera.replace("{camera_id}", cameraId);
+    const url = new URL(appendBaseUrl(endpoint));
     const response = await fetch(url.toString(), {
       next: { revalidate: 3600 },
     });
