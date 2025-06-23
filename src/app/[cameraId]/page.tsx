@@ -5,6 +5,7 @@ import LiveFeed from "./components/live-feed";
 import StreamingConfig from "./components/streaming-config";
 import TagsCard from "./components/tags-card";
 import DemographicsConfig from "./components/demographics-config";
+import { Suspense } from "react";
 type Props = {
   params: Promise<{
     cameraId: string;

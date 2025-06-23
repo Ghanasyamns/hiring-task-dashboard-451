@@ -58,3 +58,17 @@ export interface CameraDetails {
   stream_skip_frames: number;
   demographics_config: DemographicsConfig;
 }
+export type UpdateCameraData = {
+  name: string;
+  rtsp_url: string;
+  stream_frame_width: number;
+  stream_frame_height: number;
+  stream_max_length: number;
+  stream_quality: number;
+  stream_fps: number;
+  stream_skip_frames: number;
+  tags: string[];
+};
+export type FieldValidationError = {
+  [key: string]: string;
+};
