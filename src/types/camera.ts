@@ -83,4 +83,5 @@ export interface UpdateDemographicsData {
   box_area_threshold: number;
   save_interval: number;
   frame_skip_interval: number;
+  camera_id?: string;
 }

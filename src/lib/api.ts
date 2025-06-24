@@ -119,7 +119,42 @@ export const getAllTags = async (): Promise<Tag[]> => {
   }
 };
 
-export const updateTrackingConfigAPI = async (
+export const addDemographicConfigAPI = async (
+  formData: UpdateDemographicsData
+): Promise<ApiResponse<CameraDetails>> => {
+  try {
+    const endpoint = endpoints.add_demographics;
+    const url = new URL(appendBaseUrl(endpoint));
+    const response = await fetch(url.toString(), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    if (!response.ok) {
+      if (response.status === 422) {
+        const errorData = await response.json();
+        const errors: FieldValidationError = constructErrorData(errorData);
+        return { success: false, errors };
+      }
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data: CameraDetails = await response.json();
+    console.log(data);
+    return { success: true, data };
+  } catch (error) {
+    console.error("Error updating camera:", error);
+    return {
+      success: false,
+      errors: {
+        field: "Network error occurred",
+      },
+    };
+  }
+};
+
+export const updateDemographicConfigAPI = async (
   configId: string,
   formData: UpdateDemographicsData
 ): Promise<ApiResponse<CameraDetails>> => {

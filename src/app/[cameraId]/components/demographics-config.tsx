@@ -1,6 +1,5 @@
-import { formatDate } from "@/lib/utils";
 import type { DemographicsConfig } from "@/types/camera";
-import { UpdateTrackingConfigModal } from "./update-demographic";
+import { UpdateDemographicModal } from "./update-demographic";
 
 function DemographicsConfig({ data }: { data: DemographicsConfig }) {
   const {
@@ -58,7 +57,7 @@ function DemographicsConfig({ data }: { data: DemographicsConfig }) {
         <h2 className="text-lg font-semibold text-gray-800">
           Demographics Configuration
         </h2>
-        <UpdateTrackingConfigModal
+        <UpdateDemographicModal
           data={{
             track_history_max_length,
             exit_threshold,
@@ -71,6 +70,8 @@ function DemographicsConfig({ data }: { data: DemographicsConfig }) {
             frame_skip_interval,
           }}
           id={data.id}
+          cameraId={data.camera_id}
+          type={data.id ? "update" : "create"}
         />
       </div>
       <div className="p-4 space-y-4">

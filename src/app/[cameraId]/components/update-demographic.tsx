@@ -1,20 +1,18 @@
 "use client";
+import { EditIcon } from "@/components/icons/icons";
 import { FormItem } from "@/components/ui/form-item";
 import { Modal } from "@/components/ui/modal";
-// import { updateTrackingConfigAPI } from "@/lib/api"; // You'll need to create this API function
-import { FieldValidationError, UpdateDemographicsData } from "@/types/camera"; // Adjust types as needed
+import { addDemographicConfigAPI, updateDemographicConfigAPI } from "@/lib/api";
+import { FieldValidationError, UpdateDemographicsData } from "@/types/camera";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { EditIcon } from "@/components/icons/icons";
-import { updateTrackingConfigAPI } from "@/lib/api";
-
-export function UpdateTrackingConfigModal({
-  data,
-  id,
-}: {
+type Props = {
   data: UpdateDemographicsData;
   id: string;
-}) {
+  type: "update" | "create";
+  cameraId: string;
+};
+export function UpdateDemographicModal({ data, id, type, cameraId }: Props) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [errors, setErrors] = useState<FieldValidationError>({});
@@ -51,7 +49,13 @@ export function UpdateTrackingConfigModal({
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const response = await updateTrackingConfigAPI(id, formData);
+      let response;
+      if (type === "create") {
+        const payload = { ...formData, camera_id: cameraId };
+        response = await addDemographicConfigAPI(payload);
+      } else {
+        response = await updateDemographicConfigAPI(id, formData);
+      }
       if (response.success) {
         resetForm();
         router.refresh();
@@ -211,8 +215,7 @@ export function UpdateTrackingConfigModal({
             error={errors?.frame_skip_interval}
             required
             min={0}
-            max={1}
-            step={0.2}
+            max={5}
           />
 
           <button
