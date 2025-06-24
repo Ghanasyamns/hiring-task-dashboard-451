@@ -85,3 +85,69 @@ export interface UpdateDemographicsData {
   frame_skip_interval: number;
   camera_id?: string;
 }
+
+// demographics results
+export interface DemographicsDataItem {
+  count: number;
+  gender: Gender;
+  age: AgeRange;
+  emotion: Emotion;
+  ethnicity: Ethnicity;
+  id: string;
+  config_id: string;
+  created_at: string;
+}
+export enum AgeRange {
+  "0-18" = "0-18",
+  "19-30" = "19-30",
+  "31-45" = "31-45",
+  "46-60" = "46-60",
+  "60+" = "60+",
+}
+export enum Emotion {
+  angry = "Angry",
+  fear = "Fear",
+  happy = "Happy",
+  neutral = "Neutral",
+  sad = "Sad",
+  surprise = "Surprise",
+}
+export enum Ethnicity {
+  white = "White",
+  african = "African",
+  south_asian = "South Asian",
+  east_asian = "East Asian",
+  middle_eastern = "Middle Eastern",
+}
+export enum Gender {
+  Male = "male",
+  Female = "female",
+}
+export interface Analytics {
+  gender_distribution: Record<string, number>;
+  age_distribution: Record<string, number>;
+  emotion_distribution: Record<string, number>;
+  ethnicity_distribution: Record<string, number>;
+  total_count: number;
+}
+
+export interface DemographicsResult {
+  items: DemographicsDataItem[];
+  analytics: Analytics;
+}
+
+export interface FilterOptions {
+  gender: string;
+  age: string;
+  emotion: string;
+  ethnicity: string;
+  start_date: string;
+  end_date: string;
+}
+
+export interface SelectedFilters {
+  gender?: string;
+  age?: string;
+  emotion?: string;
+  ethnicity?: string;
+}

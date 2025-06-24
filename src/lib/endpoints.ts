@@ -5,4 +5,5 @@ export const endpoints = {
   get_tags: "/tags",
   add_demographics: "/demographics/config",
   update_demographics: "/demographics/config/{config_id}",
+  get_demographics_results: "/demographics/results",
 };

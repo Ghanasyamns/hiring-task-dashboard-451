@@ -7,7 +7,6 @@ import { useDebouncedCallback } from "use-debounce";
 export default function FilterProps() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  console.log(searchParams);
 
   const { replace } = useRouter();
 

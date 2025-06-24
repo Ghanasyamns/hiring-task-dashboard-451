@@ -1,6 +1,7 @@
 import {
   CameraDetails,
   CamerasApiResponse,
+  DemographicsResult,
   FieldValidationError,
   Tag,
   UpdateCameraData,
@@ -34,13 +35,11 @@ export async function getCameras(
     url.searchParams.append("page", page.toString());
     url.searchParams.append("size", size.toString());
     url.searchParams.append("camera_name", search ?? "");
-    console.log(url.toString());
 
     const response = await fetch(url.toString(), {
       next: { revalidate: 3600 },
     });
     const data: CamerasApiResponse = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     return notFound();
@@ -54,7 +53,6 @@ export const getCameraDetails = async (
     const url = new URL(appendBaseUrl(endpoint));
     const response = await fetch(url.toString());
     const data: CameraDetails = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     return notFound();
@@ -92,7 +90,6 @@ export const updateCameraAPI = async (
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data: CameraDetails = await response.json();
-    console.log(data);
     return { success: true, data };
   } catch (error) {
     console.error("Error updating camera:", error);
@@ -141,7 +138,6 @@ export const addDemographicConfigAPI = async (
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data: CameraDetails = await response.json();
-    console.log(data);
     return { success: true, data };
   } catch (error) {
     console.error("Error updating camera:", error);
@@ -180,7 +176,6 @@ export const updateDemographicConfigAPI = async (
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data: CameraDetails = await response.json();
-    console.log(data);
     return { success: true, data };
   } catch (error) {
     console.error("Error updating camera:", error);
@@ -192,3 +187,31 @@ export const updateDemographicConfigAPI = async (
     };
   }
 };
+
+export async function getDemographicsResults(
+  cameraId: string,
+  query?: {
+    gender?: string;
+    age?: string;
+    emotion?: string;
+    ethnicity?: string;
+    start_date?: string;
+    end_date?: string;
+  }
+): Promise<DemographicsResult> {
+  try {
+    const url = new URL(appendBaseUrl(endpoints.get_demographics_results));
+    url.searchParams.append("camera_id", cameraId.toString());
+    if (query !== undefined) {
+      for (const [key, value] of Object.entries(query)) {
+        url.searchParams.append(key, value);
+      }
+    }
+
+    const response = await fetch(url.toString());
+    const data: DemographicsResult = await response.json();
+    return data;
+  } catch (error) {
+    return notFound();
+  }
+}

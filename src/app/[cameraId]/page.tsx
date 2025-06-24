@@ -13,7 +13,6 @@ type Props = {
 };
 async function CameraDetails({ params }: Props) {
   const { cameraId } = await params;
-  console.log(cameraId);
 
   const data = await getCameraDetails(cameraId);
 
