@@ -23,11 +23,8 @@ const Dashboard = ({ data }: { data: DemographicsResult }) => {
       <h1 className="text-2xl md:text-3xl font-bold mb-6">
         Analytics Dashboard
       </h1>
-
-      <Filters />
-
+      <Filters isDataEmpty={data.items.length === 0} />
       <SummaryCards analytics={data.analytics} />
-
       <Charts
         analytics={data.analytics}
         filteredData={{
@@ -36,7 +33,6 @@ const Dashboard = ({ data }: { data: DemographicsResult }) => {
           ethnicity_distribution: getFilteredDistribution("ethnicity"),
         }}
       />
-
       <DataTable data={data.items ?? []} />
     </div>
   );
