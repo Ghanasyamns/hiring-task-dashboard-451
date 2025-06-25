@@ -120,8 +120,8 @@ export enum Ethnicity {
   middle_eastern = "Middle Eastern",
 }
 export enum Gender {
-  Male = "male",
-  Female = "female",
+  male = "Male",
+  female = "Female",
 }
 export interface Analytics {
   gender_distribution: Record<string, number>;

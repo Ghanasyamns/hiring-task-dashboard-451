@@ -1,4 +1,9 @@
-import { DemographicsDataItem } from "@/types/camera";
+import {
+  DemographicsDataItem,
+  Emotion,
+  Ethnicity,
+  Gender,
+} from "@/types/camera";
 import React from "react";
 
 interface DataTableProps {
@@ -39,16 +44,16 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
                 {item.count}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {item.gender}
+                {Gender[item.gender as unknown as keyof typeof Gender]}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 {item.age}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {item.emotion}
+                {Emotion[item.emotion as unknown as keyof typeof Emotion]}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {item.ethnicity}
+                {Ethnicity[item.ethnicity as unknown as keyof typeof Ethnicity]}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 {new Date(item.created_at).toLocaleDateString()}

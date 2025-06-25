@@ -61,8 +61,8 @@ const Filters = ({ isDataEmpty }: { isDataEmpty: boolean }) => {
             >
               <option value="">All Genders</option>
               {Object.entries(Gender).map(([key, value]) => (
-                <option key={key} value={value}>
-                  {key}
+                <option key={key} value={key}>
+                  {value}
                 </option>
               ))}
             </select>

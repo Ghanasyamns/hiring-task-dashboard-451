@@ -10,7 +10,7 @@ import {
   ArcElement,
 } from "chart.js";
 import { Bar, Pie } from "react-chartjs-2";
-import { Analytics } from "@/types/camera";
+import { Analytics, Emotion, Ethnicity } from "@/types/camera";
 
 ChartJS.register(
   CategoryScale,
@@ -53,7 +53,9 @@ const Charts = ({ analytics, filteredData }: ChartsProps) => {
 
   // Emotion distribution chart
   const emotionChartData = {
-    labels: Object.keys(analytics.emotion_distribution),
+    labels: Object.keys(analytics.emotion_distribution).map((emotion) => {
+      return Emotion[emotion as keyof typeof Emotion];
+    }),
     datasets: [
       {
         label: "Emotion Distribution",
@@ -81,7 +83,9 @@ const Charts = ({ analytics, filteredData }: ChartsProps) => {
 
   // Ethnicity distribution chart
   const ethnicityChartData = {
-    labels: Object.keys(analytics.ethnicity_distribution),
+    labels: Object.keys(analytics.ethnicity_distribution).map((ethnicity) => {
+      return Ethnicity[ethnicity as keyof typeof Ethnicity];
+    }),
     datasets: [
       {
         label: "Ethnicity Distribution",
@@ -146,7 +150,7 @@ const Charts = ({ analytics, filteredData }: ChartsProps) => {
         <div className="h-64">
           <Bar
             data={{
-              labels: Object.keys(ethnicityChartData.labels),
+              labels: ethnicityChartData.labels,
               datasets: ethnicityChartData.datasets,
             }}
             options={{
