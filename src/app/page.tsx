@@ -1,15 +1,14 @@
-
 import { Suspense } from "react";
 import FilterProps from "./components/filter-props";
 import CameraList from "./components/camera-list";
 import CameraListSkeleton from "./components/camera-list-skeleton";
 
 type Props = {
-  searchParams?: {
+  searchParams?: Promise<{
     search?: string;
     page?: string;
     size?: string;
-  };
+  }>;
 };
 
 export default async function Home({ searchParams }: Props) {
@@ -25,10 +24,12 @@ export default async function Home({ searchParams }: Props) {
         <FilterProps />
       </div>
 
-      <Suspense key={search + page + size} fallback={<CameraListSkeleton size={size} />}>
+      <Suspense
+        key={search + page + size}
+        fallback={<CameraListSkeleton size={size} />}
+      >
         <CameraList search={search} page={page} size={size} />
       </Suspense>
     </main>
   );
 }
-

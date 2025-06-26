@@ -1,4 +1,4 @@
-import { ChangeEventHandler, HTMLAttributes, InputHTMLAttributes } from "react";
+import { ChangeEventHandler, HTMLAttributes } from "react";
 type Props = HTMLAttributes<HTMLInputElement> & {
   defaultValue?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;

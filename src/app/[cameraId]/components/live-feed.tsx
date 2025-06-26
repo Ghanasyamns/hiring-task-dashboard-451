@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 type Props = {
   data: {
     snapshot: string;
@@ -13,11 +15,13 @@ function LiveFeed({ data }: Props) {
       <div className="p-4 border-b border-gray-200">
         <h2 className="text-lg font-semibold text-gray-800">Live Feed</h2>
       </div>
-      <div className="relative aspect-video bg-gray-100">
-        <img
+      <div className="relative aspect-video bg-gray-100 ">
+        <Image
+          fill
+          sizes="100%"
           src={data.snapshot}
           alt="Camera snapshot"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover absolute"
         />
         <div className="absolute bottom-4 left-4 bg-black bg-opacity-50 text-white px-3 py-1 rounded-md text-sm">
           {data.stream_fps} FPS | {data.stream_frame_width}x

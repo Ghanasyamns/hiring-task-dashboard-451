@@ -151,3 +151,14 @@ export interface SelectedFilters {
   emotion?: string;
   ethnicity?: string;
 }
+
+interface ValidationErrorDetail {
+  type: string;
+  loc: (string | number)[];
+  msg: string;
+  url?: string;
+}
+
+export interface ValidationErrorResponse {
+  detail: ValidationErrorDetail[];
+}

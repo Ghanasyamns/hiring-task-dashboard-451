@@ -1,4 +1,5 @@
 import { Camera } from "@/types/camera";
+import Image from "next/image";
 import Link from "next/link";
 
 const CameraCard = ({ camera }: { camera: Camera }) => {
@@ -8,10 +9,12 @@ const CameraCard = ({ camera }: { camera: Camera }) => {
       className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
     >
       <div className="relative aspect-video bg-gray-100">
-        <img
+        <Image
+          fill
+          sizes="100%"
           src={camera.snapshot}
           alt={camera.name}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover absolute"
         />
         <div
           className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium ${

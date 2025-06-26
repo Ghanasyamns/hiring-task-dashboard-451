@@ -3,9 +3,9 @@ import CameraDetailsFetcher from "./components/camera-details-fetcher";
 import CameraDetailsSkeleton from "./components/ui/camera-details-skeleton";
 
 type Props = {
-  params: {
+  params: Promise<{
     cameraId: string;
-  };
+  }>;
 };
 
 export default async function CameraDetailsPage({ params }: Props) {

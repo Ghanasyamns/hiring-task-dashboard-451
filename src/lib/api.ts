@@ -6,6 +6,7 @@ import {
   Tag,
   UpdateCameraData,
   UpdateDemographicsData,
+  ValidationErrorResponse,
 } from "@/types/camera";
 
 import { notFound } from "next/navigation";
@@ -42,6 +43,7 @@ export async function getCameras(
     const data: CamerasApiResponse = await response.json();
     return data;
   } catch (error) {
+    console.error("Error fetching camera details:", error);
     return notFound();
   }
 }
@@ -59,9 +61,9 @@ export const getCameraDetails = async (
     return notFound();
   }
 };
-const constructErrorData = (errorData: any) => {
+const constructErrorData = (errorData: ValidationErrorResponse) => {
   const errors: FieldValidationError = {};
-  errorData.detail.forEach((error: { loc: any[]; msg: string }) => {
+  errorData.detail.forEach((error) => {
     const field = error.loc[error.loc.length - 1];
     errors[field] = error.msg;
   });
@@ -112,6 +114,7 @@ export const getAllTags = async (): Promise<Tag[]> => {
     }); // keep in cache for 1 day
     const data: Tag[] = await response.json();
     return data;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return [];
   }

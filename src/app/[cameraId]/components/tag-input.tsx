@@ -34,9 +34,7 @@ export function TagInput({
         setIsLoading(false);
       }
     };
-    if (availableTags.length === 0) {
-      fetchTags();
-    }
+    fetchTags();
   }, []);
 
   const selectedTags = useMemo(() => {
