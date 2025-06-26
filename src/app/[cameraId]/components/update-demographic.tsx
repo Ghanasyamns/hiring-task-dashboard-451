@@ -5,7 +5,8 @@ import { Modal } from "@/components/ui/modal";
 import { addDemographicConfigAPI, updateDemographicConfigAPI } from "@/lib/api";
 import { FieldValidationError, UpdateDemographicsData } from "@/types/camera";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
+
 type Props = {
   data: UpdateDemographicsData;
   id: string;
@@ -18,24 +19,27 @@ export function UpdateDemographicModal({ data, id, type, cameraId }: Props) {
   const [errors, setErrors] = useState<FieldValidationError>({});
   const router = useRouter();
 
-  const initialFormData: UpdateDemographicsData = {
-    track_history_max_length: 0,
-    exit_threshold: 0,
-    min_track_duration: 0,
-    detection_confidence_threshold: 0.1,
-    demographics_confidence_threshold: 0.1,
-    min_track_updates: 0,
-    box_area_threshold: 0.05,
-    save_interval: 0,
-    frame_skip_interval: 0.1,
-  };
+  const initialFormData = useMemo(
+    () => ({
+      track_history_max_length: 0,
+      exit_threshold: 0,
+      min_track_duration: 0,
+      detection_confidence_threshold: 0.1,
+      demographics_confidence_threshold: 0.1,
+      min_track_updates: 0,
+      box_area_threshold: 0.05,
+      save_interval: 0,
+      frame_skip_interval: 0.1,
+    }),
+    []
+  );
 
   const [formData, setFormData] =
     useState<UpdateDemographicsData>(initialFormData);
 
   useEffect(() => {
     setFormData(data ?? initialFormData);
-  }, [isOpen]);
+  }, [data, initialFormData, isOpen]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -58,8 +62,8 @@ export function UpdateDemographicModal({ data, id, type, cameraId }: Props) {
       }
       if (response.success) {
         resetForm();
-        router.refresh();
         setIsOpen(false);
+        router.refresh();
       } else {
         setErrors(response.errors);
       }
@@ -214,8 +218,7 @@ export function UpdateDemographicModal({ data, id, type, cameraId }: Props) {
             onChange={handleInputChange}
             error={errors?.frame_skip_interval}
             required
-            min={0}
-            max={5}
+            // min={0}
           />
 
           <button

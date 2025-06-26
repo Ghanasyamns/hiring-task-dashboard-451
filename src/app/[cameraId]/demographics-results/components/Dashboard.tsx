@@ -1,8 +1,6 @@
 import { DemographicsResult } from "@/types/camera";
 import Charts from "./Charts";
 import DataTable from "./DataTable";
-import Filters from "./Filters";
-import SummaryCards from "./SummaryCards";
 
 const Dashboard = ({ data }: { data: DemographicsResult }) => {
   const getFilteredDistribution = (key: "age" | "emotion" | "ethnicity") => {
@@ -19,12 +17,7 @@ const Dashboard = ({ data }: { data: DemographicsResult }) => {
   };
 
   return (
-    <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
-      <h1 className="text-2xl md:text-3xl font-bold mb-6">
-        Analytics Dashboard
-      </h1>
-      <Filters isDataEmpty={data.items.length === 0} />
-      <SummaryCards analytics={data.analytics} />
+    <>
       <Charts
         analytics={data.analytics}
         filteredData={{
@@ -34,7 +27,7 @@ const Dashboard = ({ data }: { data: DemographicsResult }) => {
         }}
       />
       <DataTable data={data.items ?? []} />
-    </div>
+    </>
   );
 };
 

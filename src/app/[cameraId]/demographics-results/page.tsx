@@ -1,5 +1,9 @@
 import { getDemographicsResults } from "@/lib/api";
-import Dashboard from "./components/Dashboard";
+import { Suspense } from "react";
+import DemographicsResultsFetcher from "./components/demographics-results-fetcher";
+import Filters from "./components/Filters";
+import DemographicsResultsSkeleton from "./components/ui/demographics-results-skeleton";
+
 type Props = {
   params: Promise<{
     cameraId: string;
@@ -13,17 +17,36 @@ type Props = {
     end_date?: string;
   }>;
 };
-async function DemographicsResults({ params, searchParams }: Props) {
-  const { cameraId } = await params;
-  const queryParams = await searchParams;
 
-  const data = await getDemographicsResults(cameraId, queryParams);
+export default async function DemographicsResultsPage({
+  params,
+  searchParams,
+}: Props) {
+  const { cameraId } = await params;
+  const resolvedSearchParams = await searchParams;
+
+  // Fetch initial data for Filters and SummaryCards
+  const initialData = await getDemographicsResults(
+    cameraId,
+    resolvedSearchParams
+  );
 
   return (
-    <div>
-      <Dashboard data={data} />
+    <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
+      <h1 className="text-2xl md:text-3xl font-bold mb-6">
+        Analytics Dashboard
+      </h1>
+      <Filters isDataEmpty={initialData.items.length === 0} />
+
+      <Suspense
+        key={JSON.stringify(resolvedSearchParams)}
+        fallback={<DemographicsResultsSkeleton />}
+      >
+        <DemographicsResultsFetcher
+          cameraId={cameraId}
+          searchParams={resolvedSearchParams}
+        />
+      </Suspense>
     </div>
   );
 }
-
-export default DemographicsResults;

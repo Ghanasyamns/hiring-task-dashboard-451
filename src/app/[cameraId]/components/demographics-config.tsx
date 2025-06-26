@@ -1,3 +1,4 @@
+"use client";
 import type { DemographicsConfig } from "@/types/camera";
 import { UpdateDemographicModal } from "./update-demographic";
 

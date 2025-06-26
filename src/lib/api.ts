@@ -55,6 +55,7 @@ export const getCameraDetails = async (
     const data: CameraDetails = await response.json();
     return data;
   } catch (error) {
+    console.error("Error fetching camera details:", error);
     return notFound();
   }
 };
@@ -212,6 +213,7 @@ export async function getDemographicsResults(
     const data: DemographicsResult = await response.json();
     return data;
   } catch (error) {
-    return notFound();
+    console.error("Error fetching demographics results:", error);
+    return {} as DemographicsResult; // Return an empty object or handle as appropriate
   }
 }

@@ -4,7 +4,7 @@ import { Modal } from "@/components/ui/modal";
 import { updateCameraAPI } from "@/lib/api";
 import { FieldValidationError, Tag, UpdateCameraData } from "@/types/camera";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { TagInput } from "./tag-input";
 import { EditIcon } from "@/components/icons/icons";
 
@@ -21,7 +21,7 @@ export function UpdateCameraModal({
   const [errors, setErrors] = useState<FieldValidationError>({});
   const router = useRouter();
 
-  const initialFormData: UpdateCameraData = {
+  const initialFormData = useMemo(() => ({
     name: "",
     rtsp_url: "",
     stream_frame_width: 0,
@@ -31,14 +31,14 @@ export function UpdateCameraModal({
     stream_fps: 0,
     stream_skip_frames: 0,
     tags: [],
-  };
+  }), []);
 
   const [formData, setFormData] = useState<UpdateCameraData>(initialFormData);
 
   useEffect(() => {
     setFormData(data ?? initialFormData);
     setSelectedTags(data.tags ?? []);
-  }, [isOpen]);
+  }, [data, initialFormData, isOpen]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -201,18 +201,19 @@ export function UpdateCameraModal({
           />
 
           <button
-            type="submit"
-            disabled={isSubmitting}
-            className={`w-full py-2 px-4 rounded-md text-white ${
-              isSubmitting
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-green-600 hover:bg-green-700"
-            }`}
-          >
-            {isSubmitting ? "Processing..." : "Submit"}
-          </button>
+              type="submit"
+              disabled={isSubmitting}
+              className={`w-full py-2 px-4 rounded-md text-white ${
+                isSubmitting
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-green-600 hover:bg-green-700"
+              }`}
+            >
+              {isSubmitting ? "Processing..." : "Submit"}
+            </button>
         </form>
       </Modal>
     </div>
   );
 }
+

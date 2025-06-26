@@ -1,3 +1,4 @@
+"use client";
 import { formatDate } from "@/lib/utils";
 import { UpdateCameraModal } from "./update-camera-modal";
 import { CameraDetails } from "@/types/camera";

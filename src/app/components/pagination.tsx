@@ -28,7 +28,7 @@ function Pagination({ total, size, pages, page }: Props) {
     replace(`${pathname}?${params.toString()}`);
   };
   const range = (start: number, end: number) => {
-    let length = end - start + 1;
+    const length = end - start + 1;
     return Array.from({ length }, (_, idx) => idx + start);
   };
 
@@ -50,23 +50,23 @@ function Pagination({ total, size, pages, page }: Props) {
     const firstPageIndex = 1;
     const lastPageIndex = totalPages;
     if (!shouldShowLeftDots && shouldShowRightDots) {
-      let leftItemCount = 3 + 2 * siblingCount;
-      let leftRange = range(1, leftItemCount);
+      const leftItemCount = 3 + 2 * siblingCount;
+      const leftRange = range(1, leftItemCount);
 
       return [...leftRange, DOTS, totalPages];
     }
 
     if (shouldShowLeftDots && !shouldShowRightDots) {
-      let rightItemCount = 3 + 2 * siblingCount;
-      let rightRange = range(totalPages - rightItemCount + 1, totalPages);
+      const rightItemCount = 3 + 2 * siblingCount;
+      const rightRange = range(totalPages - rightItemCount + 1, totalPages);
       return [firstPageIndex, DOTS, ...rightRange];
     }
 
     if (shouldShowLeftDots && shouldShowRightDots) {
-      let middleRange = range(leftSiblingIndex, rightSiblingIndex);
+      const middleRange = range(leftSiblingIndex, rightSiblingIndex);
       return [firstPageIndex, DOTS, ...middleRange, DOTS, lastPageIndex];
     }
-  }, [totalPages, size, siblingCount, page]);
+  }, [totalPages, siblingCount, page]);
 
   return (
     <Suspense fallback={<div></div>}>
